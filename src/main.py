@@ -1,7 +1,8 @@
 import pygame
 import sys
-from player import Player
-from entities import EntitiesManager
+from exceptions import DeathException
+from entity.player import Player
+from entity_manager import EntityManager
 
 # Initialize Pygame
 pygame.init()
@@ -21,10 +22,9 @@ clock = pygame.time.Clock()
 player = Player(WIDTH // 2 - 25, HEIGHT - 70, WIDTH, HEIGHT)
 
 # Entities
-entities_manager = EntitiesManager(WIDTH, HEIGHT, player.y)
+em = EntityManager(WIDTH, HEIGHT)
 
 # Score
-score = 0
 font = pygame.font.SysFont(None, 30)
 
 # Game loop
@@ -38,30 +38,27 @@ while running:
 
     # Update entities
     player.update()
-    entities_manager.update()
+    em.update()
 
     # Check collisions
-    collision, collision_type = entities_manager.check_collisions(player)
-    if collision:
-        if collision_type == "enemy":
-            game_over_text = font.render("Game Over", True, WHITE)
-            screen.blit(game_over_text, (WIDTH // 2 - 50, HEIGHT // 2))
-            pygame.display.flip()
-            pygame.time.delay(2000)  # Pause for 2 seconds
-            running = False
-        elif collision_type == "coin":
-            score += 50
-            entities_manager.reset_coins(player.y)
+    try:
+        em.check_collisions(player)
+    except DeathException:
+        game_over_text = font.render("Game Over", True, WHITE)
+        screen.blit(game_over_text, (WIDTH // 2 - 50, HEIGHT // 2))
+        pygame.display.flip()
+        pygame.time.delay(2000)  # Pause for 2 seconds
+        running = False
 
     # Draw background
     screen.fill(BLUE)
 
     # Draw entities
+    em.draw(screen)
     player.draw(screen)
-    entities_manager.draw(screen)
 
     # Draw score
-    score_text = font.render("Score: {}".format(score), True, WHITE)
+    score_text = font.render("Score: {}".format(em.score), True, WHITE)
     screen.blit(score_text, (WIDTH - 150, 20))
 
     # Update display
