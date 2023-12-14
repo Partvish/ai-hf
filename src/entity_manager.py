@@ -8,6 +8,7 @@ class EntityManager:
         self.width = width
         self.height = height
         self.score = 0
+        self.entities = []
         self.generate_entities()
 
     def update(self):
@@ -16,8 +17,6 @@ class EntityManager:
                 entity.update()
             except LeftTheScreenException:
                 self.entities.remove(entity)
-        if len(self.entities) == 0:
-            self.generate_entities()
 
 
     def draw(self, screen):
@@ -31,7 +30,6 @@ class EntityManager:
                 self.entities.remove(entity)
 
     def generate_entities(self):
-        self.entities = []
         for i in range(8):
             self.entities.append(Enemy(self.width, self.height))
         for i in range(5):

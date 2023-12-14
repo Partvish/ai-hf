@@ -27,13 +27,25 @@ em = EntityManager(WIDTH, HEIGHT)
 # Score
 font = pygame.font.SysFont(None, 30)
 
+# Set up a custom event for the timer
+TIMER_EVENT = pygame.USEREVENT + 1
+pygame.time.set_timer(TIMER_EVENT, 500)
+current_time = 0
+spawn_time = 3000
+
 # Game loop
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+        elif event.type == TIMER_EVENT:
+            current_time += 500
+            if current_time > spawn_time:
+                em.generate_entities()
+                current_time = 0
+                if spawn_time > 500:
+                    spawn_time -= 100
     player.handle_input()
 
     # Update entities
