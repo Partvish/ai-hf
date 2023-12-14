@@ -12,16 +12,16 @@ class Enemy(Entity):
         self.width = width
         self.height = height
 
+        self.image = pygame.image.load("assets/goomba.bmp")
+        self.image = pygame.transform.scale(self.image, (self.size, self.size))
+
     def update(self):
         self.y += self.speed
         if self.y > self.height:
             raise LeftTheScreenException("")
 
     def draw(self, screen):
-        pygame.draw.polygon(
-            screen, (139, 69, 19),
-            [(self.x, self.y), (self.x + self.size, self.y), (self.x + self.size // 2, self.y + self.size)]
-        )
+        screen.blit(self.image, (self.x, self.y))
     
     def handle_collision(self, other, em):
         raise DeathException("")

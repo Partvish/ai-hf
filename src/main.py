@@ -13,6 +13,10 @@ FPS = 60
 WHITE = (255, 255, 255)
 BLUE = (135, 206, 250)
 
+background_image = pygame.image.load("assets/background.bmp")  # Replace "background.jpg" with your image file
+background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT+80 ))
+
+
 # Initialize the game window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Simple Mario Game")
@@ -62,8 +66,7 @@ while running:
         pygame.time.delay(2000)  # Pause for 2 seconds
         running = False
 
-    # Draw background
-    screen.fill(BLUE)
+    screen.blit(background_image, (0, 0))
 
     # Draw entities
     em.draw(screen)
