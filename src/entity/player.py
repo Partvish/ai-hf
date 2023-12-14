@@ -30,7 +30,7 @@ class Player(Entity):
         if keys[pygame.K_RIGHT] and self.x < self.width - self.size:
             self.x += self.speed
             self.stand_image = self.stand_image_r
-        if keys[pygame.K_SPACE] and not self.is_jumping:
+        if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and not self.is_jumping:
             self.is_jumping = True
 
     def update(self):
